@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Danville Zoning Lookup</title>
+  <meta name="description" content="Interactive zoning and land use explorer for City of Danville, Virginia.">
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="vendor/maplibre/maplibre-gl.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <button id="sidebar-toggle" class="icon-btn" type="button" aria-controls="sidebar" aria-expanded="true" aria-label="Hide sidebar">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="titles">
+      <h1>Danville Zoning Lookup</h1>
+      <p>Interactive Zoning and Land Use Explorer</p>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar" aria-label="Zoning tools">
+      <div id="status" class="status" role="status" aria-live="polite">Loading zoning data…</div>
+      <div id="error" class="error" role="alert" hidden></div>
+
+      <section class="panel" aria-labelledby="h-search">
+        <h2 id="h-search">Search zoning</h2>
+        <div class="search-box">
+          <label for="search-input" class="sr-only">Search by zoning code or district name</label>
+          <input id="search-input" type="search" placeholder="Search by code or district name" autocomplete="off" disabled>
+          <button id="search-clear" type="button" class="text-btn" hidden>Clear</button>
+        </div>
+        <p id="search-summary" class="muted small" aria-live="polite"></p>
+        <ul id="search-results" class="results"></ul>
+      </section>
+
+      <section class="panel" aria-labelledby="h-layers">
+        <h2 id="h-layers">Map layers</h2>
+        <label class="row"><input id="toggle-zoning" type="checkbox" checked> <span>Zoning districts</span></label>
+        <label class="row"><input id="toggle-labels" type="checkbox"> <span>Place names (satellite only)</span></label>
+        <div class="slider-row">
+          <label for="opacity">Fill opacity <output id="opacity-value">35%</output></label>
+          <input id="opacity" type="range" min="0" max="100" step="5" value="35">
+        </div>
+        <div class="btn-row">
+          <button id="btn-extent" type="button" class="btn">Full extent</button>
+          <button id="btn-clear-selection" type="button" class="btn secondary" disabled>Clear selection</button>
+        </div>
+      </section>
+
+      <section id="overlay-panel" class="panel" aria-labelledby="h-overlays" hidden>
+        <h2 id="h-overlays">Overlays</h2>
+        <ul id="overlay-list" class="overlay-list"></ul>
+        <p class="muted small">Each overlay is its own layer. Hover or select the map to see the overlays that cover that spot.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="h-legend">
+        <div class="panel-head">
+          <h2 id="h-legend">Legend</h2>
+          <button id="legend-toggle" type="button" class="text-btn" aria-expanded="true" aria-controls="legend">Hide</button>
+        </div>
+        <ul id="legend" class="legend"></ul>
+        <p id="legend-hint" class="muted small">Select a legend entry to highlight and zoom to those districts.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="h-info">
+        <h2 id="h-info">About this map</h2>
+        <p class="small">A public reference map of zoning districts within the City of Danville, Virginia. Hover over a district to see its code; select it for all attributes in the dataset, plus any overlays that cover that spot.</p>
+        <dl id="stats" class="stats"></dl>
+        <p class="disclaimer small">This is an informational mapping tool. It does not identify the zoning of a specific property or parcel. Confirm official zoning determinations with the City of Danville.</p>
+      </section>
+    </aside>
+
+    <main class="map-wrap">
+      <div id="map" role="application" aria-label="Zoning map"></div>
+      <div id="map3d" role="application" aria-label="3D zoning map" hidden></div>
+      <div class="map-card" role="group" aria-label="Basemap and view">
+        <button type="button" class="mc-thumb" id="basemap-swap" aria-label="Switch to street map">
+          <span class="mc-img" id="thumb-other"></span>
+          <span class="mc-cap" id="thumb-cap">Street map</span>
+        </button>
+        <div class="mc-pills" role="group" aria-label="Map view">
+          <button type="button" id="view-3d" aria-pressed="false" title="Tilted terrain view. Drag with the right mouse button or two fingers to rotate and tilt.">3D View</button>
+          <button type="button" id="view-2d" aria-pressed="true">2D View</button>
+        </div>
+      </div>
+      <div id="map-notice" class="map-notice" role="status" hidden></div>
+    </main>
+  </div>
+
+  <script src="vendor/leaflet/leaflet.js"></script>
+  <script src="vendor/maplibre/maplibre-gl.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
